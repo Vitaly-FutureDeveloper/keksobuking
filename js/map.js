@@ -2,6 +2,7 @@ window.addEventListener("DOMContentLoaded", function(){
 	'use strict';
 
 	var map = document.querySelector('.map');
+	var mapPin = document.querySelector('.map__pin');
 
 	var advertArr = [
 		{
@@ -33,19 +34,20 @@ window.addEventListener("DOMContentLoaded", function(){
 		},
 		{
 			"location": {
-				x: 230,
-				y: 200
+				x: 390,
+				y: 400
 			}
 		},
 	];
 
-	map.classList.remove('.map--faded');
+	map.classList.remove('map--faded');
 
-
-
-
-
-
+	mapPin.style = `left: ${advertArr[2].location.x - 31}px; top: ${advertArr[2].location.y - 31}px;`;
+		
+		mapPin.querySelector('img').
+			setAttribute('src', advertArr[0].author.avatar);
+		mapPin.querySelector('img').
+			setAttribute('alt', advertArr[1].offer.title);
 
 
 
