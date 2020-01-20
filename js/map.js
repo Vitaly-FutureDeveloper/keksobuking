@@ -7,6 +7,7 @@ window.addEventListener("DOMContentLoaded", function(){
 	var MAP_FILTER_CONTAINER = document.querySelector('.map__filters-container');
 	var maxPinsIteration = 8;
 
+	//Временные данные(имитация данных от сервера)
 	var advertArr = {
 		"author": {
 			"avatar" : `img/avatars/user02.png`
@@ -42,6 +43,7 @@ window.addEventListener("DOMContentLoaded", function(){
 
 	map.classList.remove('map--faded');
 
+	//Генератор случайных чисел для подстановки данных
 	function mt_rand(min, max){
 		try{
 			var arifm = max - min;
@@ -63,6 +65,7 @@ window.addEventListener("DOMContentLoaded", function(){
 		}
 	}
 
+	//Формирование строки тегов из массива со ссылками на фотографии
 	function popapPicsRender(){
 		var images = advertArr.offer.photos,
 			imgTags = [];
@@ -72,12 +75,16 @@ window.addEventListener("DOMContentLoaded", function(){
 		return imgTags.join('\n');
 	}
 
+	//Отрисовка стрелок-указателей на карте из массива данных
 	function renderCards(iteration){
 		var mapPiner = mapPin.cloneNode(true);
 			mapPin.remove();
 
+	//Временные данные для отрисовки стрелок 
+	//по координатам из случайных чисел
 		advertArr.location.x = mt_rand(100,800);
 		advertArr.location.y = mt_rand(200,600);
+	//
 
 		mapPiner.style = `left: ${advertArr.location.x - 31}px; top: ${advertArr.location.y - 31}px;`;
 			
@@ -89,6 +96,7 @@ window.addEventListener("DOMContentLoaded", function(){
 		return mapPiner;
 	}
 
+	//Процедура отрисовки данных в виде окошка
 	function renderTemplate(templateCard, templatePin){
 		templateCard.style = `left: ${advertArr.location.x - 31}px; top: ${advertArr.location.y - 31}px;`;
 		templateCard.querySelector('img').
@@ -111,6 +119,8 @@ window.addEventListener("DOMContentLoaded", function(){
 		map.insertBefore(templateCard, MAP_FILTER_CONTAINER);
 	}
 
+	//Процедура отображения на странице карточки данных
+	//Помещение, циклом, стрелок-указателей на карте
 	function createContentCards(){
 		var templateCard = document.querySelector('template').content;
 
@@ -127,6 +137,5 @@ window.addEventListener("DOMContentLoaded", function(){
 	}
 
 createContentCards();
-
 
 });
