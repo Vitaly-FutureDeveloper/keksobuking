@@ -151,11 +151,11 @@
 
       <fieldset class="form__element">
         <label for="capacity">Количество мест</label>
-        <select id="capacity" name="capacity">
-          <option value="3" selected>для 3 гостей</option>
+        <select id="capacity" name="capacity" min="0" max="0">
+          <option value="3">для 3 гостей</option>
           <option value="2">для 2 гостей</option>
           <option value="1">для 1 гостя</option>
-          <option value="0">не для гостей</option>
+          <option value="0" selected>не для гостей</option>
         </select>
       </fieldset>
 
@@ -196,7 +196,12 @@
         </div>
       </fieldset>
 
+
+
       <fieldset class="form__element form__element--submit">
+      <div class="errors error--off">
+        <p class="error__item error__item-guests error--off">Кол-во гостей не может превышать кол-во комнат</p>
+      </div>
         <button class="form__submit" type="submit">Опубликовать</button>
         или <button class="form__reset" type="reset">очистить</button>
       </fieldset>

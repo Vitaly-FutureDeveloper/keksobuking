@@ -711,3 +711,15 @@ textarea:focus {
 .footer-social-item-vk {
   background-position: -10px -10px;
 }
+
+.errors{
+  border: 1px solid red;
+  background-color: white;
+}
+.error__item{
+  text-shadow: 1px 0 0 grey;
+  color: black;
+}
+.error--off{
+  display: none;
+}
