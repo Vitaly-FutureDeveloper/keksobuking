@@ -1,58 +1,8 @@
 window.addEventListener("DOMContentLoaded", function(){
-	//'use strict';
-
-	var map = document.querySelector('.map');
-	var mapPin = document.querySelector('.map__pin'),
-		mapPins = document.querySelector('.map__pins');
+	'use strict';
+(function(){
 	var MAP_FILTER_CONTAINER = document.querySelector('.map__filters-container');
-	var maxPinsIteration = 8;
-
-	//Временные данные(имитация данных от сервера)
-	var advertArr = {
-		"author": {
-			"avatar" : `img/avatars/user02.png`
-		},
-
-		"offer": {
-			"title": "Красивый гостевой домик",
-			"address": [ //"{{location.x}}, {{location.y}}"
-				600,
-				350
-			],
-			"price": 1000000,
-			"type": "flat",
-			"rooms": 5,
-			"guests": 8,
-			"checkin": '14:00',
-			"checkout": '12:00',
-			"features": ["wifi", "dishwasher", "washer", "elevator", "conditioner"],
-			"description": '',
-			"photos": [
-				"http://o0.github.io/assets/images/tokyo/hotel1.jpg",
-				"http://o0.github.io/assets/images/tokyo/hotel2.jpg",
-				"http://o0.github.io/assets/images/tokyo/hotel3.jpg",
-				],
-		},
-		
-		"location": {
-			x: 390,
-			y: 400
-		}
-
-	};
-
-	//map.classList.remove('map--faded');
-
-	//Генератор случайных чисел для подстановки данных
-	function mt_rand(min, max){
-		try{
-			var arifm = max - min;
-				arifm = Math.floor(Math.random() * Math.floor(arifm));
-			return min + arifm;
-		} catch {
-			console.log("Ошибка в указании данных для генератора случайных чисел");
-		}
-	}
+	var maxPinsIteration = 8; //mock кол-во массивов данных от сервера
 
 	//Поиск значения в массиве и показ опций преимуществ 
 	function featureOned(templateCard){
@@ -76,17 +26,22 @@ window.addEventListener("DOMContentLoaded", function(){
 	}
 
 	//Отрисовка стрелок-указателей на карте из массива данных
-	function renderCards(iteration){
-		var mapPiner = mapPin.cloneNode(true);
-			mapPin.remove();
+	function renderCards(){
+		var mapPiner = window.mapPin.cloneNode(true);
 
-	//Временные данные для отрисовки стрелок 
+			window.mapPin.remove();
+
+		//window.mapPink = mapPiner;//document.querySelectorAll(".map__pin");
+
+		map.classList.remove('map--faded');
+
+	//mock Временные данные для отрисовки стрелок 
 	//по координатам из случайных чисел
 		advertArr.location.x = mt_rand(100,800);
 		advertArr.location.y = mt_rand(200,600);
 	//
 
-		mapPiner.style = `left: ${advertArr.location.x - 31}px; top: ${advertArr.location.y - 31}px;`;
+		mapPiner.style = `left: ${advertArr.location.x + 31}px; top: ${advertArr.location.y - 82}px;`;
 			
 		mapPiner.querySelector('img').
 			setAttribute('src', advertArr.author.avatar);
@@ -97,8 +52,8 @@ window.addEventListener("DOMContentLoaded", function(){
 	}
 
 	//Процедура отрисовки данных в виде окошка
-	function renderTemplate(templateCard, templatePin){
-		templateCard.style = `left: ${advertArr.location.x - 31}px; top: ${advertArr.location.y - 31}px;`;
+	function renderTemplate(){
+		templateCard.style = `left: ${advertArr.location.x + 31}px; top: ${advertArr.location.y - 82}px;`;
 		templateCard.querySelector('img').
 			setAttribute('src', advertArr.author.avatar);
 		templateCard.querySelector('img').
@@ -116,71 +71,37 @@ window.addEventListener("DOMContentLoaded", function(){
 		templateCard.querySelector('.popup__description').textContent = advertArr.offer.description;
 		templateCard.querySelector('.popup__pictures').innerHTML = popapPicsRender();
 
-		map.insertBefore(templateCard, MAP_FILTER_CONTAINER);
+		window.map.insertBefore(templateCard, MAP_FILTER_CONTAINER);
 	}
 
-	//Процедура отображения на странице карточки данных
+	function removeTemplate(){
+		var article = document.querySelector('.map__card.popup');
+
+		document.removeEventListener('mouseover', renderTemplate);
+		article.remove();
+	}
+
+	//Отображение на странице карточки данных
 	//Помещение, циклом, стрелок-указателей на карте
-	function createContentCards(){
+		window.mapPink = [];
+
 		var templateCard = document.querySelector('template').content;
 
 		var	templatePin = templateCard.querySelector('.map__pin').cloneNode(true);
 		var templateCard = templateCard.querySelector('.map__card').cloneNode(true);
 
-		renderTemplate(templateCard, templatePin);
-
 		var fragment = document.createDocumentFragment();
 		for(var i = 0; i < maxPinsIteration; i++){
-			fragment.appendChild(renderCards());
+			fragment.appendChild( window.mapPink[i] = renderCards() );
 		}
-		mapPins.appendChild(fragment);
-	}
+		window.mapPins.appendChild(fragment);
 
-	//createContentCards();
+		console.log(window.mapPink);
 
-//*******//
-//Events// >>
-//*******//
-
-	var buttonMapPinMain = document.querySelector('.map__pin--main');
-/*
-	var inputHousingType = document.querySelector('#housing-type'),
-		inputHousingPrice = document.querySelector('#housing-price'),
-		inputHousingRooms = document.querySelector('#housing-rooms'),
-		inputHousingGuests = document.querySelector('#housing-guests'),
-		inputHousingFeatures = document.querySelectorAll('input[name=features]');
-*/
-	var inputFormAddress = document.querySelector('#address'),
-		inputFormTitle = document.querySelector('#title'),
-		inputFormType = document.querySelector('#type'),
-		inputFormPrice = document.querySelector('#price'),
-		inputFormTimeIn = document.querySelector('#timein'),
-		inputFormTimeOut = document.querySelector('#timeout'),
-		inputFormRoom = document.querySelector('#room_number'),
-		inputFormGuests = document.querySelector('#capacity'),
-		inputFormFeatures = document.querySelectorAll('input[name=features]'),
-		inputFormDescription = document.querySelector('#description');
-
-	var noticeForm = document.querySelector('.notice__form');
-
-	buttonMapPinMain.addEventListener('mouseup', function(){ 
-		map.classList.remove('map--faded');
-
-		inputFormAddress.value = advertArr.offer.address;
-	});
+		window.mapPink.forEach( (item) => item.addEventListener('mouseover', renderTemplate));
+		window.mapPink.forEach( (item) => item.addEventListener('mouseout', removeTemplate));
 
 
-	noticeForm.addEventListener('submit', function(evt){
-
-		var inputGuestsValue = inputFormGuests.options[inputFormGuests.selectedIndex].value;
-		var inputRoomValue = inputFormRoom.options[inputFormRoom.selectedIndex].value;
-
-		if ( inputGuestsValue > inputRoomValue ){
-			evt.preventDefault();
-			document.querySelector('.errors').classList.remove('error--off');
-			document.querySelector('.error__item-guests').classList.remove('error--off');
-		}
-	});
-
+})();
 
 });
