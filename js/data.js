@@ -1,5 +1,8 @@
 'use strict';
 
+window.MapFilterForm = document.querySelector('.map__filters');
+window.offertForm = document.querySelector('.notice__form');
+
 	//Временные данные(имитация данных от сервера)
 	var advertArr = {
 		"author": {

@@ -4,13 +4,6 @@
 	
 	var buttonMapPinMain = document.querySelector('.map__pin--main');
 
-/*
-	var inputHousingType = document.querySelector('#housing-type'),
-		inputHousingPrice = document.querySelector('#housing-price'),
-		inputHousingRooms = document.querySelector('#housing-rooms'),
-		inputHousingGuests = document.querySelector('#housing-guests'),
-		inputHousingFeatures = document.querySelectorAll('input[name=features]');
-*/
 	var inputFormAddress = document.querySelector('#address'),
 		inputFormTitle = document.querySelector('#title'),
 		inputFormType = document.querySelector('#type'),
@@ -24,13 +17,13 @@
 
 	var noticeForm = document.querySelector('.notice__form');
 
-	buttonMapPinMain.addEventListener('mouseup', function(){ 
+	buttonMapPinMain.addEventListener('click', function(){ 
 		window.map.classList.remove('map--faded');
 
 		inputFormAddress.value = advertArr.offer.address;
 	});
 
-
+	noticeForm.addEventListener('mouseover', () => noticeForm.classList.remove('notice__form--disabled'));
 	noticeForm.addEventListener('submit', function(evt){
 
 		var inputGuestsValue = inputFormGuests.options[inputFormGuests.selectedIndex].value;

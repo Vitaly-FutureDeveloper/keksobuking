@@ -1,6 +1,6 @@
 window.addEventListener("DOMContentLoaded", function(){
 	'use strict';
-(function(){
+(function search(){
 	var MAP_FILTER_CONTAINER = document.querySelector('.map__filters-container');
 	var maxPinsIteration = 8; //mock кол-во массивов данных от сервера
 
@@ -26,27 +26,27 @@ window.addEventListener("DOMContentLoaded", function(){
 	}
 
 	//Отрисовка стрелок-указателей на карте из массива данных
-	function renderCards(){
+	window.renderCards = function(data){
 		var mapPiner = window.mapPin.cloneNode(true);
 
 			window.mapPin.remove();
-
-		//window.mapPink = mapPiner;//document.querySelectorAll(".map__pin");
 
 		map.classList.remove('map--faded');
 
 	//mock Временные данные для отрисовки стрелок 
 	//по координатам из случайных чисел
+	/*
 		advertArr.location.x = mt_rand(100,800);
 		advertArr.location.y = mt_rand(200,600);
+		*/
 	//
 
-		mapPiner.style = `left: ${advertArr.location.x + 31}px; top: ${advertArr.location.y - 82}px;`;
+		mapPiner.style = `left: ${data.location.x + 31}px; top: ${data.location.y - 82}px;`;
 			
 		mapPiner.querySelector('img').
-			setAttribute('src', advertArr.author.avatar);
+			setAttribute('src', data.author.avatar);
 		mapPiner.querySelector('img').
-			setAttribute('alt', advertArr.offer.title);
+			setAttribute('alt', data.offer.title);
 
 		return mapPiner;
 	}
@@ -90,18 +90,17 @@ window.addEventListener("DOMContentLoaded", function(){
 		var	templatePin = templateCard.querySelector('.map__pin').cloneNode(true);
 		var templateCard = templateCard.querySelector('.map__card').cloneNode(true);
 
+/*
 		var fragment = document.createDocumentFragment();
 		for(var i = 0; i < maxPinsIteration; i++){
 			fragment.appendChild( window.mapPink[i] = renderCards() );
 		}
 		window.mapPins.appendChild(fragment);
-
+*/
 		console.log(window.mapPink);
 
 		window.mapPink.forEach( (item) => item.addEventListener('mouseover', renderTemplate));
 		window.mapPink.forEach( (item) => item.addEventListener('mouseout', removeTemplate));
-
-
 })();
 
 });
