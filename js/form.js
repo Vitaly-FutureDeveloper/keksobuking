@@ -36,4 +36,10 @@
 		}
 	});
 
+	window.offertForm.addEventListener('submit', (evt) => {
+		evt.preventDefault();
+		window.upload(new FormData(window.offertForm));
+		alert('Форма отправлена');
+	});
+	
 })();

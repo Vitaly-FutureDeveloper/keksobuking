@@ -1,9 +1,39 @@
 window.addEventListener("DOMContentLoaded", function(){
 	'use strict';
-(function search(){
-	var MAP_FILTER_CONTAINER = document.querySelector('.map__filters-container');
-	var maxPinsIteration = 8; //mock кол-во массивов данных от сервера
 
+(function(){
+	var MAP_FILTER_CONTAINER = document.querySelector('.map__filters-container');
+
+	//Отрисовка стрелок-указателей на карте из массива данных
+	window.renderCards = function(data){
+		var mapPiner = window.mapPin.cloneNode(true);
+
+			window.mapPin.remove();
+
+		map.classList.remove('map--faded');
+
+		mapPiner.style = `left: ${data.location.x + 31}px; top: ${data.location.y - 82}px;`;
+			
+		mapPiner.querySelector('img').
+			setAttribute('src', data.author.avatar);
+		mapPiner.querySelector('img').
+			setAttribute('alt', data.offer.title);
+
+		return mapPiner;
+	};
+
+	window.eventCards = function(dataPinks, dataTemps){
+		dataPinks.forEach( (item, index) => {
+			var data = [];
+			data = dataTemps[index];
+			item.addEventListener('mouseover', (evt) => {
+				//var data
+				renderTemplate(data, index);
+			});
+		});
+		dataPinks.forEach( (item, index) => item.addEventListener('mouseout', removeTemplate) );
+	};
+	
 	//Поиск значения в массиве и показ опций преимуществ 
 	function featureOned(templateCard){
 		var features = ["wifi", "dishwasher", "parking", "washer", "elevator", "conditioner"];
@@ -15,92 +45,67 @@ window.addEventListener("DOMContentLoaded", function(){
 		}
 	}
 
-	//Формирование строки тегов из массива со ссылками на фотографии
-	function popapPicsRender(){
-		var images = advertArr.offer.photos,
-			imgTags = [];
-		for(var image in images){
-			imgTags.push(`<li><img src="${images[image]}"></li>`);
-		}
-		return imgTags.join('\n');
-	}
-
-	//Отрисовка стрелок-указателей на карте из массива данных
-	window.renderCards = function(data){
-		var mapPiner = window.mapPin.cloneNode(true);
-
-			window.mapPin.remove();
-
-		map.classList.remove('map--faded');
-
-	//mock Временные данные для отрисовки стрелок 
-	//по координатам из случайных чисел
-	/*
-		advertArr.location.x = mt_rand(100,800);
-		advertArr.location.y = mt_rand(200,600);
-		*/
-	//
-
-		mapPiner.style = `left: ${data.location.x + 31}px; top: ${data.location.y - 82}px;`;
-			
-		mapPiner.querySelector('img').
-			setAttribute('src', data.author.avatar);
-		mapPiner.querySelector('img').
-			setAttribute('alt', data.offer.title);
-
-		return mapPiner;
-	}
 
 	//Процедура отрисовки данных в виде окошка
-	function renderTemplate(){
-		templateCard.style = `left: ${advertArr.location.x + 31}px; top: ${advertArr.location.y - 82}px;`;
-		templateCard.querySelector('img').
-			setAttribute('src', advertArr.author.avatar);
-		templateCard.querySelector('img').
-			setAttribute('alt', advertArr.offer.title);
+	function renderTemplate(data, index){
 
-		templateCard.querySelector('.popup__title').textContent = advertArr.offer.title;
-		templateCard.querySelector('.popup__text--address').textContent = advertArr.offer.address;
-		templateCard.querySelector('.popup__text--price').textContent = advertArr.offer.price;
-		templateCard.querySelector('.popup__type').textContent = advertArr.offer.type;
-		templateCard.querySelector('.popup__text--rooms').textContent = advertArr.offer.rooms;
-		templateCard.querySelector('.popup__text--guests').textContent = advertArr.offer.guests;
-		templateCard.querySelector('.popup__text--timein').textContent = advertArr.offer.checkin;
-		templateCard.querySelector('.popup__text--timeout').textContent = advertArr.offer.checkout;
+		//Формирование строки тегов из массива со ссылками на фотографии
+		function popapPicsRender(){
+			var images = data.offer.photos,
+				imgTags = [];
+			for(var image in images){
+				imgTags.push(`<li><img src="${images[image]}"></li>`);
+			}
+			return imgTags.join('\n');
+		}
+
+		try{
+
+		var templateCard = document.querySelector('template').content;
+		var templateCard = templateCard.querySelector('.map__card').cloneNode(true);
+
+		if(data.location.x >= 950 || data.location.y >= 450){
+			templateCard.style = `left: ${data.location.x + 31 - 250}px; top: ${data.location.y - 82 - 200}px;`;
+		}
+		/*	
+		 else if (data.location.x >= 950 && data.location.y <= 350) {
+			templateCard.style = `left: ${data.location.x + 31 - 250}px; top: ${data.location.y - 82}px;`;
+		}else if (data.location.x <= 950 && data.location.y >= 350) {
+			templateCard.style = `left: ${data.location.x + 31}px; top: ${data.location.y - 82 - 200}px;`;
+		}
+		*/
+		else{
+			templateCard.style = `left: ${data.location.x + 31}px; top: ${data.location.y - 82}px;`;
+		}
+		
+
+		templateCard.querySelector('.popup__avatar').setAttribute('src', data.author.avatar);
+		templateCard.querySelector('.popup__avatar').setAttribute('alt', data.offer.title);
+
+		templateCard.querySelector('.popup__title').textContent = data.offer.title;
+		templateCard.querySelector('.popup__text--address').textContent = data.offer.address;
+		templateCard.querySelector('.popup__text--price').textContent = data.offer.price;
+		templateCard.querySelector('.popup__type').textContent = data.offer.type;
+		templateCard.querySelector('.popup__text--rooms').textContent = data.offer.rooms;
+		templateCard.querySelector('.popup__text--guests').textContent = data.offer.guests;
+		templateCard.querySelector('.popup__text--timein').textContent = data.offer.checkin;
+		templateCard.querySelector('.popup__text--timeout').textContent = data.offer.checkout;
 		featureOned(templateCard);
-		templateCard.querySelector('.popup__description').textContent = advertArr.offer.description;
+		templateCard.querySelector('.popup__description').textContent = data.offer.description;
 		templateCard.querySelector('.popup__pictures').innerHTML = popapPicsRender();
 
 		window.map.insertBefore(templateCard, MAP_FILTER_CONTAINER);
+
+	} catch { console.log('Нет данных для отрисовки пинов'); }
+
 	}
 
 	function removeTemplate(){
 		var article = document.querySelector('.map__card.popup');
-
-		document.removeEventListener('mouseover', renderTemplate);
 		article.remove();
 	}
 
-	//Отображение на странице карточки данных
-	//Помещение, циклом, стрелок-указателей на карте
-		window.mapPink = [];
-
-		var templateCard = document.querySelector('template').content;
-
-		var	templatePin = templateCard.querySelector('.map__pin').cloneNode(true);
-		var templateCard = templateCard.querySelector('.map__card').cloneNode(true);
-
-/*
-		var fragment = document.createDocumentFragment();
-		for(var i = 0; i < maxPinsIteration; i++){
-			fragment.appendChild( window.mapPink[i] = renderCards() );
-		}
-		window.mapPins.appendChild(fragment);
-*/
-		console.log(window.mapPink);
-
-		window.mapPink.forEach( (item) => item.addEventListener('mouseover', renderTemplate));
-		window.mapPink.forEach( (item) => item.addEventListener('mouseout', removeTemplate));
+		
 })();
 
 });

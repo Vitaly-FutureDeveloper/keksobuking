@@ -6,15 +6,16 @@
 	}
 
 	function onSuccess(data){
-		console.log(data);
 
+		window.mapPink = [];
+		window.dataTemps = [];
 		var fragment = document.createDocumentFragment();
 
 		for(var i = 0; i < data.length; i++){
-			fragment.appendChild(window.renderCards(data[i]));
+			fragment.appendChild(window.mapPink[i] = window.renderCards(window.dataTemps[i] = data[i]));
 		}
 		window.mapPins.appendChild(fragment);
-
+		window.eventCards(window.mapPink, window.dataTemps);
 	}
 
 	var dataMapFilter = new FormData(window.MapFilterForm);
@@ -66,9 +67,7 @@
 
 	};
 
-	//window.load(onSuccess, onError);
-
-	window.upload = function(data, onSuccess){
+	window.upload = function(data){
 		var xhr = new XMLHttpRequest();
 		var URL = 'https://js.dump.academy/keksobooking';
 
