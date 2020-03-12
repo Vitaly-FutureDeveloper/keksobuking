@@ -20,7 +20,7 @@
 	buttonMapPinMain.addEventListener('click', function(){ 
 		window.map.classList.remove('map--faded');
 
-		inputFormAddress.value = advertArr.offer.address;
+		//inputFormAddress.value = advertArr.offer.address;
 	});
 
 	noticeForm.addEventListener('mouseover', () => noticeForm.classList.remove('notice__form--disabled'));
@@ -40,6 +40,8 @@
 		evt.preventDefault();
 		window.upload(new FormData(window.offertForm));
 		alert('Форма отправлена');
+
+		document.querySelector('.form__reset').click();
 	});
 	
 })();

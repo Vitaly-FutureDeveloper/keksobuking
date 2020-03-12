@@ -6,6 +6,7 @@ window.addEventListener("DOMContentLoaded", function(){
 
 	//Отрисовка стрелок-указателей на карте из массива данных
 	window.renderCards = function(data){
+		try{
 		var mapPiner = window.mapPin.cloneNode(true);
 
 			window.mapPin.remove();
@@ -19,6 +20,8 @@ window.addEventListener("DOMContentLoaded", function(){
 		mapPiner.querySelector('img').
 			setAttribute('alt', data.offer.title);
 
+		} catch { console.log('Нет данных для отрисовки пинов'); }
+
 		return mapPiner;
 	};
 
@@ -27,25 +30,13 @@ window.addEventListener("DOMContentLoaded", function(){
 			var data = [];
 			data = dataTemps[index];
 			item.addEventListener('mouseover', (evt) => {
-				//var data
 				renderTemplate(data, index);
 			});
 		});
 		dataPinks.forEach( (item, index) => item.addEventListener('mouseout', removeTemplate) );
 	};
 	
-	//Поиск значения в массиве и показ опций преимуществ 
-	function featureOned(templateCard){
-		var features = ["wifi", "dishwasher", "parking", "washer", "elevator", "conditioner"];
-		for(var feature in features){
-			if(advertArr.offer.features.includes(features[feature])){
-				templateCard.querySelector(`.feature--${features[feature]}`).
-							style.backgroundColor = 'lightgreen';
-			}
-		}
-	}
-
-
+	
 	//Процедура отрисовки данных в виде окошка
 	function renderTemplate(data, index){
 
@@ -57,6 +48,17 @@ window.addEventListener("DOMContentLoaded", function(){
 				imgTags.push(`<li><img src="${images[image]}"></li>`);
 			}
 			return imgTags.join('\n');
+		}
+
+		//Поиск значения в массиве и показ опций преимуществ 
+		function featureOned(templateCard){
+			var features = ["wifi", "dishwasher", "parking", "washer", "elevator", "conditioner"];
+			for(var feature in features){
+				if(advertArr.offer.features.includes(features[feature])){
+					templateCard.querySelector(`.feature--${features[feature]}`).
+								style.backgroundColor = 'lightgreen';
+				}
+			}
 		}
 
 		try{
